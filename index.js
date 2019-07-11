@@ -8,8 +8,10 @@ var http = require('http');
 var https = require('https');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
-var config = require('./config');
+var config = require('./lib/config');
 var fs = require('fs');
+var handlers = require('./lib/handlers');
+var helpers = require('./lib/helpers')
 
 // Instantiate the HTTP server
 var httpServer = http.createServer(function(req, res){
@@ -63,7 +65,7 @@ var unifiedServer = function(req, res){
         buffer += decoder.end();
 
         // Choose the handler this request should go to. if one is not found use the not found handler
-        var chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound
+        var chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
 
         //construct the data object to send to the handlers
         var data = {
@@ -71,9 +73,8 @@ var unifiedServer = function(req, res){
             'queryStringObject' : queryStringObject,
             'method' : method,
             'headers' : headers,
-            'payload' : buffer,
+            'payload' : helpers.parseJsonToObject(buffer),
         }
-
         // Route the request to the handler in the router
         chosenHandler(data, function(statusCode, payload){
             // Use the status code called back by the handler or default 200
@@ -98,20 +99,9 @@ var unifiedServer = function(req, res){
     });
 };
 
-// Define the handlers
-var handlers = {};
-
-//ping handler
-handlers.ping=function(data, callback){
-    callback(200);
-}
-
-// Not found handler
-handlers.notFound = function(data, callback){
-    callback(404);
-};
-
 // Define a request router
 var router = {
-    'ping' : handlers.ping
-}
+    'ping' : handlers.ping,
+    'users' : handlers.users,
+    'tokens' : handlers.tokens
+};

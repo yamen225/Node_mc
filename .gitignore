@@ -2,3 +2,4 @@
 .data/tokens/*
 .data/users/*
 .data/test/*
+node_modules

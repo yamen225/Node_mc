@@ -1,1 +1,4 @@
-.data/*
+.data/checks/*
+.data/tokens/*
+.data/users/*
+.data/test/*

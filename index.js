@@ -11,7 +11,7 @@ var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./lib/config');
 var fs = require('fs');
 var handlers = require('./lib/handlers');
-var helpers = require('./lib/helpers')
+var helpers = require('./lib/helpers');
 
 // Instantiate the HTTP server
 var httpServer = http.createServer(function(req, res){

@@ -3,3 +3,4 @@
 .data/users/*
 .data/test/*
 node_modules
+.logs/*
